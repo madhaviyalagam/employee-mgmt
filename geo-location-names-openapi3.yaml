@@ -1,0 +1,83 @@
+openapi: 3.0.3
+info:
+  title: "Geo Location Names API"
+  version: "1.0"
+  description: This is the Geo Location Names API
+
+tags:
+  - name: GeoLocationNamesV1
+
+paths:
+  /firm-reference-data/v1/geo_location/names:
+    get:
+      operationId: getGeoLocationNames
+      tags:
+        - GeoLocationNamesV1
+      summary:
+        This API gives the static mapping between the current and historical geo location codes
+        and the geo location names as of People Central go live (January 16, 2021).
+      description: |-
+        <b>API Description :</b> This API gives the static mapping between the current and historical geo location codes
+        and the geo location names as of People Central go live (January 16, 2021). <br/>
+        <b>Business Logic/Filter on data :</b> This API fetches geo locactions data from FDW reference table.<br/>
+        <b>Sourced from :</b>  NA<br/>
+        <b>Source overview : </b> API Gateway>Document DB>SnowFlake<br/>
+        <b>Works with ''Try it Out''? :</b> Yes<br/>
+        <b>Application Context/User Context/Both:</b> Application Context<br/>
+        <b>Caching and frequency :</b> 4 hours starting 2:00 AM EST<br/>
+        <b>Any exceptional scenarios associated to API?:</b> None<br/>
+        <b>Security Level:</b>Level 1 (Public)<br/>
+        <b>Hypermedia Links:</b>No<br/>
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetGeoLocationNamesResponse"
+          description: Success
+        "404":
+          description: Resource not found
+        "406":
+          description: Input data is in invalid format
+        "500":
+          description: Internal Server Error
+
+components:
+  schemas:
+    GetGeoLocationNamesResponse:
+      description:
+        This API gives the static mapping between the current and historical geo location codes
+        and the geo location names as of People Central go live (January 16, 2021).
+      type: object
+      properties:
+        apiVersion:
+          description: Api version
+          type: string
+        noOfRecords:
+          description: No of Records
+          type: integer
+          format: int64
+        geoLocNames:
+          type: array
+          items:
+            $ref: "#/components/schemas/GeoLocationName"
+
+    GeoLocationName:
+      description: List of fields in the view
+      type: object
+      properties:
+        geoLocationCode:
+          description: Three letter code use to describe geo location (Unique identifier for each row in a table)
+          type: string
+        geoLocationCode4:
+          description: Four letter code use to describe geo location (Unique identifier for each row in a table)
+          type: string
+        currentGeoName:
+          description: Current Geo location office name.
+          type: string
+        originalGeoName:
+          description: Original Geo location office name.
+          type: string
+        alternateGeoName:
+          description: Alternate Geo location office name.
+          type: string
